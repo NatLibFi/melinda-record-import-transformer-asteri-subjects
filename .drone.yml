@@ -1,0 +1,93 @@
+---
+kind: pipeline
+type: docker
+name: Default
+
+trigger:
+  event:
+    - push
+
+steps:
+
+  - name: generate-tags
+    image: quay.io/natlibfi/drone-gen-tags
+
+  - name: audit
+    image: node:12
+    commands:
+      - npm audit --package-lock-only --production --audit-level=moderate
+
+  - name: install
+    image: node:12
+    commands:
+      - npm ci
+    environment:
+      NPM_CONFIG_IGNORE_SCRIPTS: true
+
+  - name: test
+    image: node:12
+    commands:
+      - npm test
+
+  - name: check-coverage
+    image: node:12
+    commands:
+      - npm run coverage
+
+  - name: build
+    image: node:12
+    commands:
+      - npm run build
+
+  - name: static-security-scan
+    image: quay.io/natlibfi/njsscan
+    commands:
+      - njsscan dist
+
+  - name: docker
+    image: plugins/docker
+    settings:
+      repo: quay.io/natlibfi/melinda-record-import-transformer-asteri-subjects
+      registry: quay.io
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+---
+kind: pipeline
+type: docker
+name: Update dependencies
+
+trigger:
+  event:
+    - custom
+  branch:
+    - main
+
+steps:
+
+  - name: publish
+    image: quay.io/natlibfi/drone-npm-git-publish
+    settings:
+      git_user_name: natlibfi-melinda-automation
+      git_user_email: 65649125+natlibfi-melinda-automation@users.noreply.github.com
+      git_ssh_key:
+        from_secret: ssh_key
+      git_gpg_key:
+        from_secret: gpg_key
+---
+kind: secret
+name: docker_username
+data:
+---
+kind: secret
+name: docker_password
+data:
+---
+kind: secret
+name: ssh_key
+data:
+---
+kind: secret
+name: gpg_key
+data:
