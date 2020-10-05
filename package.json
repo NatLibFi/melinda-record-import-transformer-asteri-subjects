@@ -36,9 +36,11 @@
 	"dependencies": {
 		"@natlibfi/marc-record": "^6.1.1",
 		"@natlibfi/marc-record-validate": "^6.0.1",
+		"@natlibfi/marc-record-validators-melinda": "^8.2.3",
 		"@natlibfi/melinda-backend-commons": "^2.0.2",
 		"@natlibfi/melinda-commons": "^11.0.1",
-		"@natlibfi/melinda-record-import-commons": "^9.0.0-beta.2"
+		"@natlibfi/melinda-record-import-commons": "^9.0.0-beta.2",
+		"xml-flow": "^1.0.4"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.10.1",

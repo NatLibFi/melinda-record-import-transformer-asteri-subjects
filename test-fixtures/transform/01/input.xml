@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<collection>
+  <record>
+    <leader>00738cz  a2200229n  4500</leader>
+    <controlfield tag="001">000101054</controlfield>
+    <controlfield tag="003">FI-NL</controlfield>
+        <controlfield tag="005">20181019020531.0</controlfield>
+        <controlfield tag="008">000316| |az|||aabn           | aaa      </controlfield>
+
+	<datafield tag="024" ind1="7" ind2=" ">
+          <subfield code="a">path-of-glory</subfield>
+	  <subfield code="2">uri</subfield>
+	</datafield>
+		
+        <datafield tag="040" ind1=" " ind2=" ">
+          <subfield code="a">FI-NL</subfield>
+          <subfield code="b">fin</subfield>
+	  <subfield code="f">yso/fin</subfield>
+        </datafield>
+        <datafield tag="100" ind1="1" ind2=" ">
+          <subfield code="a">Malevitš, Kazimir</subfield>
+          <subfield code="0">(FI-ASTERI-N)000101054</subfield>
+        </datafield>
+        <datafield tag="400" ind1="1" ind2=" ">
+          <subfield code="a">Malevitsh, Kazimir</subfield>
+        </datafield>
+        <datafield tag="400" ind1="1" ind2=" ">
+          <subfield code="a">Mаlevič, Kаzimir</subfield>
+        </datafield>
+        <datafield tag="400" ind1="1" ind2=" ">
+          <subfield code="a">Малевич, Казимир</subfield>
+        </datafield>
+        <datafield tag="035" ind1=" " ind2=" ">
+          <subfield code="a">(FI-ASTERI-N)000101054</subfield>
+        </datafield>
+      </record>
+</collection>

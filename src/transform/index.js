@@ -26,7 +26,72 @@
 *
 */
 
-import createValidator from '.';
+import {MarcRecord} from '@natlibfi/marc-record';
+import {EventEmitter} from 'events';
+//import createConverter from './convert';
+import { melkehitys1653 as createConverter } from './convert';
+import createValidator from './validate';
+import NotSupportedError from './../error'; // Added 23.6.2020
+import {MARCXML} from '@natlibfi/marc-record-serializers';
 
 export default options => (stream, {validate = true, fix = true} = {}) => {
+  MarcRecord.setValidationOptions({subfieldValues: false});
+
+  const emitter = new class extends EventEmitter{}();
+
+  start();
+
+  return emitter;
+
+  async function start() {
+    let converterPromise; // eslint-disable-line functional/no-let
+    const promises = [];
+
+    const validateRecord = await createValidator();
+
+    const reader = new MARCXML.Reader(stream)
+        .on('end', async () => {
+            try {
+              await Promise.all(promises);
+              emitter.emit('end', promises.length);
+            } catch (err) {
+              /* istanbul ignore next: Generic error */ emitter.emit('error', err);
+            }
+        })
+        .on('data', input_record => {
+            try {
+                promises.push(convert()); // eslint-disable-line functional/immutable-data
+            } catch (err) {
+                /* istanbul ignore next: Generic error */ emitter.emit('error', err);
+            }
+      
+            async function convert() {
+                try {
+                  const obj = input_record;
+                  const convertRecord = converterPromise;
+                  const record = createConverter(input_record);
+
+                  if (validate === true || fix === true) {
+                    const result = await validateRecord(record, fix);      
+                    emitter.emit('record', result);
+                    return;
+                  }
+      
+                  /* istanbul ignore next: No tests without validators */ emitter.emit('record', {record});
+                } catch (err) {
+      
+                  if (err instanceof NotSupportedError) {
+      
+                    return emitter.emit('record', {
+                      failed: true,
+                      messages: [err.message]
+                    });
+                  }
+      
+                  throw err;
+      
+                }
+            }
+        });       
+    }
 }
