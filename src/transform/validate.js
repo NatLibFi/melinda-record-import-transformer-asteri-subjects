@@ -27,9 +27,19 @@
 */
 
 import validateFactory from '@natlibfi/marc-record-validate';
+import {
+  FieldExclusion as fieldExclusion
+} from '@natlibfi/marc-record-validators-melinda';
 
 export default async () => {
-  const validate = validateFactory([]);
+  const validate = validateFactory([
+    await fieldExclusion([
+      {
+        tag: /^003$/u
+      }
+    ]),
+
+  ]);
 
   return async (record, fix, validateFixes) => {
     const opts = fix ? {fix, validateFixes} : /* istanbul ignore next: The actual functionality is tested with the first condition */ {fix};
