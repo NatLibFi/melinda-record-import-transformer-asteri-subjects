@@ -153,7 +153,7 @@ export function melkehitys1653(record) {
     // local_tests();
 
     if ( record.leader.charAt(6) != 'z' ) {
-        console.error("not an authority record");
+        console.error("Error: not an authority record. No fixes applied!");
         return record;
     }
 
@@ -161,10 +161,6 @@ export function melkehitys1653(record) {
 
     let ontholex = recordGetValueOfFirstInstanceOfSubfield(record, '040', null, null, 'f');
 
-    if ( ontholex === null ) {
-        console.warn("No 040\$f found. Skipping record.")
-        //return record;
-    }
     if ( !valid_lexicon_or_onthology(ontholex) ) {
         console.warn(ontholext === null ? "No 040\$f found" : "Unsupported 040\$f '"+ontholex+"'");
         ontholex = null;
@@ -183,11 +179,8 @@ export function melkehitys1653(record) {
         return record;
     }
     
-
-
     // console.info("Got uri '"+uri+"'");
 
-    // NB! Start from the end, so that splice won't cause us trouble
     for ( let i=0; i < record.fields.length; i++ ) {
         record.fields[i] = updateField(record.fields[i], ontholex, uri);
     }
