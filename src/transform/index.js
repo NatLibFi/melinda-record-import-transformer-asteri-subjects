@@ -28,8 +28,6 @@
 
 import {MarcRecord} from '@natlibfi/marc-record';
 import {EventEmitter} from 'events';
-import createStreamParser, {toXml, ALWAYS as streamParserAlways} from 'xml-flow';
-import {Parser} from 'xml2js';
 //import createConverter from './convert';
 import { melkehitys1653 as createConverter } from './convert';
 import createValidator from './validate';
@@ -39,7 +37,7 @@ import {MARCXML} from '@natlibfi/marc-record-serializers';
 export default options => (stream, {validate = true, fix = true} = {}) => {
   MarcRecord.setValidationOptions({subfieldValues: false});
 
-  const emitter = new class extends EventEmitter {}();
+  const emitter = new class extends EventEmitter{}();
 
   start();
 
